@@ -2,13 +2,13 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel , Field ,computed_field 
 from typing import Literal,Annotated
-import pickle
+import joblib
 import pandas as pd 
 
 
 # import the ml model 
 with open('model.pkl','rb') as f:
-    model =pickle.load(f)
+    model =joblib.load(f)
     
 app=FastAPI() 
 
@@ -40,7 +40,7 @@ class UserInput(BaseModel):
     def lifestyle_risk(self)->str:
         if self.smoker and self.bmi > 30:
             return "high"
-        elif self.smoker or self.smoker > 27:
+        elif self.smoker or self.bmi > 27:
             return "medium"
         else:
             return "low"
