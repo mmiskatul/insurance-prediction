@@ -54,4 +54,13 @@ class UserInput(BaseModel):
             return "middle_aged"
         return "senior"
     
+    @computed_field
+    @property
+    def city_tier(self)->int:
+        if self.city in tier_1_cities:
+            return 1
+        elif self.city in tier_2_cities:
+            return 2
+        else:
+            return 3
     
