@@ -12,7 +12,13 @@ with open('model.pkl','rb') as f:
 app=FastAPI() 
 
 # pydantic model to validate incoming data 
-
+tier_1_cities = ["Mumbai", "Delhi", "Bangalore", "Chennai", "Kolkata", "Hyderabad", "Pune"]
+tier_2_cities = [
+    "Jaipur", "Chandigarh", "Indore", "Lucknow", "Patna", "Ranchi", "Visakhapatnam", "Coimbatore",
+    "Bhopal", "Nagpur", "Vadodara", "Surat", "Rajkot", "Jodhpur", "Raipur", "Amritsar", "Varanasi",
+    "Agra", "Dehradun", "Mysore", "Jabalpur", "Guwahati", "Thiruvananthapuram", "Ludhiana", "Nashik",
+    "Allahabad", "Udaipur", "Aurangabad", "Hubli", "Belgaum", "Salem", "Vijayawada", "Tiruchirappalli",
+    "Bhavnagar", "Gwalior", "Dhanbad", "Bareilly", "Aligarh", "Gaya", "Kozhikode", "Warangal",]
 class UserInput(BaseModel):
     age : Annotated[int,Field(...,gt=0,lt=120 ,description='Age of the User ')]
     weight: Annotated[float,Field(...,gt=0,description='Weight the User ')]
@@ -22,4 +28,11 @@ class UserInput(BaseModel):
     city : Annotated[str,Field(...,description='The City User Live ')]
     occupation: Annotated[Literal['retired', 'freelancer', 'student', 'government_job',
        'business_owner', 'unemployed', 'private_job'],Field(...,description='User Occupation ')]
+    
+    @computed_field
+    @property
+    def bmi(self)->float: 
+        bmi =self.weight/(self.height**2)
+        return bmi
+  
     
